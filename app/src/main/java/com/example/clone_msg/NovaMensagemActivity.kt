@@ -63,7 +63,6 @@ class NovaMensagemActivity : AppCompatActivity() {
                         Log.d("NovaMensagemActivity", "Tamanho lista: ${userslist.size}")
                     }
                 }
-                finish()
                 binding.listaElementosRecyclerView.adapter = UserAdapter(userslist,layoutInflater)
                 Log.d("NovaMensagemActivity", "Acionando o Adapter com Sucesso!")
             }

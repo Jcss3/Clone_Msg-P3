@@ -10,7 +10,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Clone_Msg">
-        <activity android:name=".ConversaActivity"></activity>
+        <activity android:name=".ConversaActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ultimasMensagensActivity" />
+        </activity>
         <activity android:name=".NovaMensagemActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

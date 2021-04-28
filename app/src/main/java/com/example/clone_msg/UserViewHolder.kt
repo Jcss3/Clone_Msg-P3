@@ -13,6 +13,7 @@ class UserViewHolder (private val binding : UserRowNovaMensagemBinding) : Recycl
     var nome : String = "Algum Nome!"
     var image : String = "Algum Numero!"
     var numero: String = "Algum numero!"
+    var imageUrl:String = ""
 
     init {
         // listening a linha toda do contato/recycler view
@@ -31,12 +32,15 @@ class UserViewHolder (private val binding : UserRowNovaMensagemBinding) : Recycl
             }
         }
 
-        binding.userNameTextView.setOnClickListener {
+        binding.root.setOnClickListener {
             // Pegar o context para poder disparar o intent/activity
             // Pegar o context para poder disparar o intent/activity
             val context = binding.userNameTextView.context
             //Intent Explicito
             val intentExplicito = Intent(context, ConversaActivity::class.java)
+            intentExplicito.putExtra("Username",binding.userNameTextView.text)
+            intentExplicito.putExtra("Numero",binding.btnLigar.text)
+            intentExplicito.putExtra("Image",imageUrl)
 
             // Verificar se existe alguma activity que consegue lidar com esse intent
             if(intentExplicito.resolveActivity(context.packageManager) != null){
@@ -51,6 +55,7 @@ class UserViewHolder (private val binding : UserRowNovaMensagemBinding) : Recycl
     fun bindto(user: User){
         nome = user.username
         image = user.fotoUrl
+        imageUrl = user.fotoUrl
         numero = user.numero
 
         binding.btnLigar.text = user.numero
