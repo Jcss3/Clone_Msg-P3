@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "905253452767",
+    "project_id": "clonemsgp3",
+    "storage_bucket": "clonemsgp3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:905253452767:android:08cf47194ad4b8cdf7e26a",
+        "android_client_info": {
+          "package_name": "com.example.clone_msg"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "905253452767-v2smd3l2al7ar98b1nrps6h9e5vlg1c5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA5qxQ0LIIIKKx8eXrB1X6OYKkr8yl3BT8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "905253452767-v2smd3l2al7ar98b1nrps6h9e5vlg1c5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
