@@ -9,7 +9,7 @@ import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.clone_msg.databinding.ActivityMainBinding
+import com.example.clone_msg.databinding.ActivityRegistroBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
@@ -21,15 +21,15 @@ import java.net.URI
 import java.util.*
 
 
-class MainActivity : AppCompatActivity() {
+class RegistroActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
-    private lateinit var binding : ActivityMainBinding
+    private lateinit var binding : ActivityRegistroBinding
     private var foto : Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityRegistroBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         //acesse a instância compartilhada do objeto FirebaseAuth
@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity() {
 
         //Botao para inserir foto
         binding.ImageViewFoto.setOnClickListener {
-            Log.d("MainActivity","Inserindo Foto!")
+            Log.d("RegistroActivity","Inserindo Foto!")
 
             val getIntent = Intent(Intent.ACTION_GET_CONTENT)
             getIntent.type = "image/*"
@@ -53,14 +53,14 @@ class MainActivity : AppCompatActivity() {
             if(chooserIntent.resolveActivity(packageManager) != null){
                 startActivityForResult(chooserIntent, 0)
             }else{
-                Toast.makeText(this, "Nehum app resolve esse Intent!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Nenhum app resolve esse Intent!", Toast.LENGTH_SHORT).show()
             }
 
         }
 
         // Botoo para Criar conta.
         binding.btnRegister.setOnClickListener {
-            Log.d("MainActivity","Registrando conta!")
+            Log.d("RegistroActivity","Registrando conta!")
             val email = binding.emailRegisterScreen.text.toString()
             val password = binding.passwordRegisterScreen.text.toString()
             registrar(email,password)
@@ -68,7 +68,7 @@ class MainActivity : AppCompatActivity() {
 
         //Botao para ir para tela de login.
         binding.jaTemConta.setOnClickListener {
-            Log.d("MainActivity","Indo para tela de Login!")
+            Log.d("RegistroActivity","Indo para tela de Login!")
             // Iniciar a tela de login!
             val intentExplicito = Intent(this,LoginActivity::class.java)
             startActivity(intentExplicito)
@@ -80,7 +80,7 @@ class MainActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if(requestCode == 0 && resultCode == Activity.RESULT_OK && data != null){
             // verificque qual foto foi selecionada
-            Log.d("MainActivity","Foto foi selecionada!")
+            Log.d("RegistroActivity","Foto foi selecionada!")
 
             val fotoSelecionada = data.data
             foto = fotoSelecionada
@@ -93,20 +93,20 @@ class MainActivity : AppCompatActivity() {
     }
 
     // Ao inicializar sua atividade, verifique se o usuário está conectado no momento
-    public override fun onStart() {
+   /* public override fun onStart() {
         super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
         val currentUser = auth.currentUser
         if(currentUser != null){
             reload();
         }
-    }
+    }*/
 
     //Crie uma conta enviando o endereço de e-mail e a senha do novo usuário para createUserWithEmailAndPassword.
     private fun registrar(email:String, password:String){
 
         if(email.isEmpty()||password.isEmpty()) {
-            Log.d("MainActivity", "Erro ao Registrar!")
+            Log.d("RegistroActivity", "Erro ao Registrar!")
             Toast.makeText(this,"Por favor digite seu email e/ou password!",Toast.LENGTH_SHORT).show()
             return
         }
@@ -116,19 +116,19 @@ class MainActivity : AppCompatActivity() {
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
-                    Log.d(TAG, "createUserWithEmail:success")
-                    val user = auth.currentUser
+                    Log.d("Registro", "createUserWithEmail:success")
+                    /*val user = auth.currentUser
                     // atualiza o user
-                    updateUI(user)
+                    updateUI(user)*/
 
                     // guardar img no firebase
                     uploadImageToFirebaseStorage()
                 } else {
                     // If sign in fails, display a message to the user.
-                    Log.w(TAG, "createUserWithEmail:failure", task.exception)
+                    Log.w("Registro", "createUserWithEmail:failure", task.exception)
                     Toast.makeText(baseContext, "Authentication failed.",
                         Toast.LENGTH_SHORT).show()
-                    updateUI(null)
+                    //updateUI(null)
                 }
             }
 
@@ -147,18 +147,18 @@ class MainActivity : AppCompatActivity() {
         val storageRef = Firebase.storage.reference.child("/images/$fileName")
         storageRef.putFile(foto!!)
             .addOnSuccessListener {
-                Log.d("MainActivity", "Upload de Foto foi finalizado com sucesso! ${it.metadata?.path}")
+                Log.d("RegistroActivity", "Upload de Foto foi finalizado com sucesso! ${it.metadata?.path}")
 
                 storageRef.downloadUrl.addOnSuccessListener {
                     // it is location/Uri of foto
-                    Log.d("MainActivity", "Localizacao do Arquivo:  $it")
+                    Log.d("RegistroActivity", "Localizacao do Arquivo:  $it")
 
-                    Log.d("MainActivity", "Iniciando upload de info no database!")
+                    Log.d("RegistroActivity", "Iniciando upload de info no database!")
                     salveUserFirebaseDatabase(it.toString())
                 }
             }
             .addOnFailureListener {
-                Log.d("MainActivity", "Erro ao dar Upload de foto!")
+                Log.d("RegistroActivity", "Erro ao dar Upload de foto!")
             }
     }
 
@@ -174,20 +174,20 @@ class MainActivity : AppCompatActivity() {
 
         ref.setValue(user)
             .addOnSuccessListener {
-                Log.d("MainActivity","Info do user salvo no database!")
+                Log.d("RegistroActivity","Info do user salvo no database!")
 
-                Log.d("MainActivity","Indo para ultimasMensagensActivity")
+                Log.d("RegistroActivity","Indo para ultimasMensagensActivity")
                 val intent = Intent(this,ultimasMensagensActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
                 startActivity(intent)
             }
             .addOnFailureListener {
-                Log.d("MainActivity", "Erro ao tentar salvar info do user no database!")
+                Log.d("RegistroActivity", "Erro ao tentar salvar info do user no database!")
             }
     }
 
 
-    private fun updateUI(user: FirebaseUser?) {
+  /*  private fun updateUI(user: FirebaseUser?) {
 
     }
     private fun reload() {
@@ -195,7 +195,7 @@ class MainActivity : AppCompatActivity() {
     }
     companion object {
         private const val TAG = "EmailPassword"
-    }
+    }*/
 
 
 }

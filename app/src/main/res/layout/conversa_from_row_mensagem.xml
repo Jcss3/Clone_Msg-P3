@@ -7,13 +7,15 @@
     android:layout_height="wrap_content"
     android:layout_marginBottom="12dp">
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/UserImageViewConversa"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="24dp"
         android:background="@drawable/rounded_foto"
+        app:civ_border_color="@color/black"
+        app:civ_border_width="2dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -26,9 +28,9 @@
         android:padding="16dp"
         android:text="TextView"
         android:textAlignment="viewStart"
-        android:textAllCaps="true"
+        android:textAllCaps="false"
         android:textColor="@color/black"
-        android:textSize="14sp"
+        android:textSize="12sp"
         android:textStyle="bold|italic"
         app:layout_constraintBottom_toBottomOf="@+id/UserImageViewConversa"
         app:layout_constraintStart_toEndOf="@+id/UserImageViewConversa"

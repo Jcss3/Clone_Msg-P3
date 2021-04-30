@@ -10,10 +10,11 @@ import com.squareup.picasso.Picasso
 
 class UserViewHolder (private val binding : UserRowNovaMensagemBinding) : RecyclerView.ViewHolder(binding.root) {
 
-    var nome : String = "Algum Nome!"
-    var image : String = "Algum Numero!"
-    var numero: String = "Algum numero!"
+    var nome : String = ""
+    var image : String = ""
+    var numero: String = ""
     var imageUrl:String = ""
+    var uid:String=""
 
     init {
         // listening a linha toda do contato/recycler view
@@ -41,6 +42,7 @@ class UserViewHolder (private val binding : UserRowNovaMensagemBinding) : Recycl
             intentExplicito.putExtra("Username",binding.userNameTextView.text)
             intentExplicito.putExtra("Numero",binding.btnLigar.text)
             intentExplicito.putExtra("Image",imageUrl)
+            intentExplicito.putExtra("uid",uid)
 
             // Verificar se existe alguma activity que consegue lidar com esse intent
             if(intentExplicito.resolveActivity(context.packageManager) != null){
@@ -57,8 +59,9 @@ class UserViewHolder (private val binding : UserRowNovaMensagemBinding) : Recycl
         image = user.fotoUrl
         imageUrl = user.fotoUrl
         numero = user.numero
+        uid = user.uid
 
-        binding.btnLigar.text = user.numero
+        //binding.btnLigar.text = user.numero
         binding.userNameTextView.text = user.username
         Picasso.get()
             .load(user.fotoUrl)

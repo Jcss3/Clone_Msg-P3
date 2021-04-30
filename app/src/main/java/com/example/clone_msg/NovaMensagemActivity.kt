@@ -36,7 +36,6 @@ class NovaMensagemActivity : AppCompatActivity() {
         binding.listaElementosRecyclerView.addItemDecoration(
             DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
         )
-
         getUsers()
 
     }
@@ -49,7 +48,6 @@ class NovaMensagemActivity : AppCompatActivity() {
         // Read from the database
         ref.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
             }
 
             override fun onDataChange(snapshot: DataSnapshot) {
