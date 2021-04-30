@@ -19,10 +19,12 @@ class ultimasMensagensActivity : AppCompatActivity() {
 
     companion object{
         var userLogado : User ?= null
+        var chatContatoUser : User? = null
     }
 
     private lateinit var binding : ActivityUltimasMensagensBinding
     private val ultimamensagenList = arrayListOf<Mensagem>()
+    private val ultimaMensagemMap = HashMap<String,ChatMessage>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,16 +37,58 @@ class ultimasMensagensActivity : AppCompatActivity() {
         binding.recycleviewUltimamensagem.addItemDecoration(
                 DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
         )
-        
+
+
         escutarUltimasMensagens()
+
         getUserLogado()
         // verificar se o user esta logado
         verificarSeUserIsLoggedIn()
-
-        binding.recycleviewUltimamensagem.adapter = MensagemAdapter(ultimamensagenList,layoutInflater)
     }
 
-    val ultimaMensagemMap = HashMap<String,ChatMessage>()
+    private fun refreshRecyclerViewMensagens() {
+        //ultimamensagenList.clear()
+        ultimaMensagemMap.values.forEach {
+            var username = "Tester"
+            var fotourl = "Teste.png"
+
+            // determianndo qual uid é do contato que enviou/recebeu a msg
+            val contatoID : String
+            if(it.fromid == FirebaseAuth.getInstance().uid){
+                contatoID = it.toid
+            }else{
+                contatoID = it.fromid
+            }
+
+            // pegando o valor do uid do dataase
+            val ref = FirebaseDatabase.getInstance().getReference(("/users/$contatoID"))
+            ref.addListenerForSingleValueEvent(object:ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    chatContatoUser = snapshot.getValue(User::class.java) ?: return
+                    username = chatContatoUser!!.username
+                    fotourl = chatContatoUser!!.fotoUrl
+
+                    // ultimo texto enviado
+                    val ultima_mensagem = it.texto
+                    Log.d("UltimasMensagens","$it")
+
+                    // identificados do adapter para ultimamensagemviewholder = 2
+                    val mensagem = Mensagem(2, ultima_mensagem,fotourl,username )
+
+                    ultimamensagenList.add(mensagem)
+
+                    Log.d("UltimasMensagens","RefreshRecyclerViewMensagens: ${ultimamensagenList.size}")
+
+                    binding.recycleviewUltimamensagem.adapter = MensagemAdapter(ultimamensagenList,layoutInflater)
+                    Log.d("UltimasMensagens", "Acionando o Adapter ultimasMensagens dentro do RefreshRecyclerViewMensagens com Sucesso!")
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                }
+            })
+
+        }
+    }
 
     private fun escutarUltimasMensagens() {
         val fromID = FirebaseAuth.getInstance().uid
@@ -53,24 +97,19 @@ class ultimasMensagensActivity : AppCompatActivity() {
         ref.addChildEventListener(object:ChildEventListener{
 
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-                val chatmessage = snapshot.getValue(ChatMessage::class.java)
-                //if(chatmessage==null) return
-                // ultimo texto enviado
-                val msg = chatmessage?.texto.toString()
-                Log.d("UltimasMensagens","$chatmessage")
-
-                ultimamensagenList.add(Mensagem(2, msg,"teste.png","tester"))
-                Log.d("UltimasMensagens","${ultimamensagenList.size}")
+                ultimamensagenList.clear()
+                val chatmessage = snapshot.getValue(ChatMessage::class.java) ?: return
+                Log.d("UltimasMensagens", "Acionando onChildAdd, $chatmessage")
+                ultimaMensagemMap[snapshot.key!!] = chatmessage
+                refreshRecyclerViewMensagens()
             }
 
             override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
-                /*val chatmessage = snapshot.getValue(ChatMessage::class.java)
-
-                val msg = chatmessage?.texto.toString()
-                Log.d("UltimasMensagens","$chatmessage")
-
-                ultimamensagenList.add(Mensagem(2, msg,"teste.png","tester2"))
-                Log.d("UltimasMensagens","${ultimamensagenList.size*//*}")*/
+                ultimamensagenList.clear()
+                val chatmessage = snapshot.getValue(ChatMessage::class.java) ?: return
+                Log.d("UltimasMensagens", "Acionando onChildChanged, $chatmessage")
+                ultimaMensagemMap[snapshot.key!!] = chatmessage
+                refreshRecyclerViewMensagens()
             }
 
             override fun onCancelled(error: DatabaseError) {

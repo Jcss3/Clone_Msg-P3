@@ -22,12 +22,17 @@ class NovaMensagemActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityNovaMensagemBinding
     private val userslist = arrayListOf<User>()
+    companion object{
+        var User_Key : User? = null
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityNovaMensagemBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        Log.d("NovaMensagemActivity", "Chegando na tela Novamensagem")
         supportActionBar?.title = "Selecione Contato"
 
         // como os elementos vao ser organizados em uma lista vertical
@@ -54,15 +59,15 @@ class NovaMensagemActivity : AppCompatActivity() {
 
                 snapshot.children.forEach {
                     Log.d("NovaMensagemActivity", "User info: $it.toString()")
-                    val user = it.getValue(User::class.java)
-                    if (user != null) {
-                        userslist.add(user)
-                        Log.d("NovaMensagemActivity", "User add to list sucessfully: ${user.toString()}")
+                    User_Key = it.getValue(User::class.java)
+                    if (User_Key != null) {
+                        userslist.add(User_Key!!)
+                        Log.d("NovaMensagemActivity", "User add to list sucessfully: ${User_Key.toString()}")
                         Log.d("NovaMensagemActivity", "Tamanho lista: ${userslist.size}")
                     }
                 }
                 binding.listaElementosRecyclerView.adapter = UserAdapter(userslist,layoutInflater)
-                Log.d("NovaMensagemActivity", "Acionando o Adapter com Sucesso!")
+                Log.d("NovaMensagemActivity", "Acionando o Adapter da Novamensagem com Sucesso!")
             }
 
         })

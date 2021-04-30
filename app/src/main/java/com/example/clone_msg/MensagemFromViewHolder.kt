@@ -10,11 +10,12 @@ class MensagemFromViewHolder(private val binding : ConversaFromRowMensagemBindin
     fun bindto(mensagem: Mensagem){
 
         binding.campoTextoConversa.text = mensagem.texto
+        Log.d("MensagemFromViewHolder", mensagem.texto)
 
         Picasso.get()
                 .load(mensagem.foto)
                 .into(binding.UserImageViewConversa)
-        Log.d("MensagemFromViewHolder", "${mensagem.foto}")
+        Log.d("MensagemFromViewHolder", mensagem.foto)
     }
 
 }

@@ -26,6 +26,7 @@ class ConversaActivity : AppCompatActivity() {
         binding = ActivityConversaBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        Log.d("ConversaActivity", "Chegando na tela Conversa activity")
         supportActionBar?.title = intent.getStringExtra("Username")
 
         // como os elementos vao ser organizados em uma lista vertical
