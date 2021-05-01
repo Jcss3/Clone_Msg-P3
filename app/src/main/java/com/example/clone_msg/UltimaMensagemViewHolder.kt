@@ -18,8 +18,19 @@ class UltimaMensagemViewHolder(private val binding : UltimaMensagemRowBinding) :
     init {
         binding.root.setOnClickListener {
             //val row = it as ultimasMensagensActivity
+            var numero = ""
+            var uid = ""
+            var fotoUrl = ""
 
-            ultimasMensagensActivity.chatContatoUser?.username
+            ultimasMensagensActivity.chatContatoUsers.values.forEach {
+                if(it.username == username){
+                    username = it.username
+                    numero = it.numero
+                    uid = it.uid
+                    fotoUrl = it.fotoUrl
+                }
+
+            }
             // Pegar o context para poder disparar o intent/activity
             // Pegar o context para poder disparar o intent/activity
 
@@ -28,10 +39,10 @@ class UltimaMensagemViewHolder(private val binding : UltimaMensagemRowBinding) :
             //Intent Explicito
             val intentExplicito = Intent(context, ConversaActivity::class.java)
 
-            intentExplicito.putExtra("Username",ultimasMensagensActivity.chatContatoUser?.username)
-            intentExplicito.putExtra("uid", ultimasMensagensActivity.chatContatoUser?.uid)
-            intentExplicito.putExtra("Numero",ultimasMensagensActivity.chatContatoUser?.numero)
-            intentExplicito.putExtra("Image",ultimasMensagensActivity.chatContatoUser?.fotoUrl)
+            intentExplicito.putExtra("Username",username)
+            intentExplicito.putExtra("uid", uid)
+            intentExplicito.putExtra("Numero",numero)
+            intentExplicito.putExtra("Image",fotoUrl)
 
             // Verificar se existe alguma activity que consegue lidar com esse intent
             if(intentExplicito.resolveActivity(context.packageManager) != null){

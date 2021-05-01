@@ -19,7 +19,8 @@ class ultimasMensagensActivity : AppCompatActivity() {
 
     companion object{
         var userLogado : User ?= null
-        var chatContatoUser : User? = null
+        val chatContatoUsers = HashMap<String,User>()
+        var chatContatoUser : User = User()
     }
 
     private lateinit var binding : ActivityUltimasMensagensBinding
@@ -47,7 +48,7 @@ class ultimasMensagensActivity : AppCompatActivity() {
     }
 
     private fun refreshRecyclerViewMensagens() {
-        //ultimamensagenList.clear()
+        ultimamensagenList.clear()
         ultimaMensagemMap.values.forEach {
             var username = "Tester"
             var fotourl = "Teste.png"
@@ -65,6 +66,9 @@ class ultimasMensagensActivity : AppCompatActivity() {
             ref.addListenerForSingleValueEvent(object:ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {
                     chatContatoUser = snapshot.getValue(User::class.java) ?: return
+
+                    chatContatoUsers[snapshot.key!!] = chatContatoUser
+
                     username = chatContatoUser!!.username
                     fotourl = chatContatoUser!!.fotoUrl
 
@@ -97,15 +101,17 @@ class ultimasMensagensActivity : AppCompatActivity() {
         ref.addChildEventListener(object:ChildEventListener{
 
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-                ultimamensagenList.clear()
+                //ultimamensagenList.clear()
                 val chatmessage = snapshot.getValue(ChatMessage::class.java) ?: return
                 Log.d("UltimasMensagens", "Acionando onChildAdd, $chatmessage")
                 ultimaMensagemMap[snapshot.key!!] = chatmessage
                 refreshRecyclerViewMensagens()
+
+
             }
 
             override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
-                ultimamensagenList.clear()
+                //ultimamensagenList.clear()
                 val chatmessage = snapshot.getValue(ChatMessage::class.java) ?: return
                 Log.d("UltimasMensagens", "Acionando onChildChanged, $chatmessage")
                 ultimaMensagemMap[snapshot.key!!] = chatmessage

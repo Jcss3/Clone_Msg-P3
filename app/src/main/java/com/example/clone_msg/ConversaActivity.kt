@@ -81,6 +81,7 @@ class ConversaActivity : AppCompatActivity() {
                 }
                 // carregando msg ja enviadas
                 //binding.conversaRecyclerview.adapter = MensagemAdapter(mensagensList,layoutInflater)
+                binding.conversaRecyclerview.scrollToPosition(MensagemAdapter(mensagensList,layoutInflater).itemCount-1)
             }
             override fun onCancelled(error: DatabaseError) {
             }
