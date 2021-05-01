@@ -17,6 +17,7 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieAdapter
 import com.xwray.groupie.Item
 import com.xwray.groupie.viewbinding.GroupieViewHolder
+import kotlin.math.sign
 
 class NovaMensagemActivity : AppCompatActivity() {
 
@@ -41,6 +42,7 @@ class NovaMensagemActivity : AppCompatActivity() {
         binding.listaElementosRecyclerView.addItemDecoration(
             DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
         )
+        
         getUsers()
 
     }

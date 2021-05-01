@@ -11,7 +11,6 @@ import com.squareup.picasso.Picasso
 class UserViewHolder (private val binding : UserRowNovaMensagemBinding) : RecyclerView.ViewHolder(binding.root) {
 
     var nome : String = ""
-    var image : String = ""
     var numero: String = ""
     var imageUrl:String = ""
     var uid:String=""
@@ -56,15 +55,14 @@ class UserViewHolder (private val binding : UserRowNovaMensagemBinding) : Recycl
 
     fun bindto(user: User){
         nome = user.username
-        image = user.fotoUrl
         imageUrl = user.fotoUrl
         numero = user.numero
         uid = user.uid
 
         //binding.btnLigar.text = user.numero
-        binding.userNameTextView.text = user.username
+        binding.userNameTextView.text = nome
         Picasso.get()
-            .load(user.fotoUrl)
+            .load(imageUrl)
             .into(binding.fotoImageView)
     }
 

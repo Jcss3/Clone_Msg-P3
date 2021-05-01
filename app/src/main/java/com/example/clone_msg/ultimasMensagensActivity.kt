@@ -39,20 +39,14 @@ class ultimasMensagensActivity : AppCompatActivity() {
                 DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
         )
 
-
         escutarUltimasMensagens()
-
         getUserLogado()
-        // verificar se o user esta logado
         verificarSeUserIsLoggedIn()
     }
 
     private fun refreshRecyclerViewMensagens() {
         ultimamensagenList.clear()
         ultimaMensagemMap.values.forEach {
-            var username = "Tester"
-            var fotourl = "Teste.png"
-
             // determianndo qual uid é do contato que enviou/recebeu a msg
             val contatoID : String
             if(it.fromid == FirebaseAuth.getInstance().uid){
@@ -69,8 +63,8 @@ class ultimasMensagensActivity : AppCompatActivity() {
 
                     chatContatoUsers[snapshot.key!!] = chatContatoUser
 
-                    username = chatContatoUser!!.username
-                    fotourl = chatContatoUser!!.fotoUrl
+                    val username = chatContatoUser.username
+                    val fotourl = chatContatoUser.fotoUrl
 
                     // ultimo texto enviado
                     val ultima_mensagem = it.texto
@@ -79,8 +73,9 @@ class ultimasMensagensActivity : AppCompatActivity() {
                     // identificados do adapter para ultimamensagemviewholder = 2
                     val mensagem = Mensagem(2, ultima_mensagem,fotourl,username )
 
-                    ultimamensagenList.add(mensagem)
-
+                    if(!ultimamensagenList.contains(mensagem)){
+                        ultimamensagenList.add(mensagem)
+                    }
                     Log.d("UltimasMensagens","RefreshRecyclerViewMensagens: ${ultimamensagenList.size}")
 
                     binding.recycleviewUltimamensagem.adapter = MensagemAdapter(ultimamensagenList,layoutInflater)
@@ -127,16 +122,6 @@ class ultimasMensagensActivity : AppCompatActivity() {
         })
     }
 
-    private fun setDummyRows() {
-        ultimamensagenList.add(Mensagem(2,"Testanto","teste.png","Tester"))
-        ultimamensagenList.add(Mensagem(2,"Testanto","teste.png","Tester2"))
-        ultimamensagenList.add(Mensagem(2,"Testanto","teste.png","Tester3"))
-        ultimamensagenList.add(Mensagem(2,"Testanto","teste.png","Tester4"))
-        ultimamensagenList.add(Mensagem(2,"Testanto","teste.png","Tester5"))
-
-        binding.recycleviewUltimamensagem.adapter = MensagemAdapter(ultimamensagenList,layoutInflater)
-    }
-
     private fun getUserLogado() {
         val uid  = FirebaseAuth.getInstance().uid
         val ref = FirebaseDatabase.getInstance().getReference("/users/$uid")
@@ -156,7 +141,7 @@ class ultimasMensagensActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // switch para saber qual botao foi clicado
-        when(item?.itemId){
+        when(item.itemId){
             R.id.new_message ->{
                 // desconectando
                 //FirebaseAuth.getInstance().signOut()*/
