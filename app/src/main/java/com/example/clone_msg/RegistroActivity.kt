@@ -92,16 +92,6 @@ class RegistroActivity : AppCompatActivity() {
         }
     }
 
-    // Ao inicializar sua atividade, verifique se o usuário está conectado no momento
-   /* public override fun onStart() {
-        super.onStart()
-        // Check if user is signed in (non-null) and update UI accordingly.
-        val currentUser = auth.currentUser
-        if(currentUser != null){
-            reload();
-        }
-    }*/
-
     //Crie uma conta enviando o endereço de e-mail e a senha do novo usuário para createUserWithEmailAndPassword.
     private fun registrar(email:String, password:String){
 
@@ -185,17 +175,4 @@ class RegistroActivity : AppCompatActivity() {
                 Log.d("RegistroActivity", "Erro ao tentar salvar info do user no database!")
             }
     }
-
-
-  /*  private fun updateUI(user: FirebaseUser?) {
-
-    }
-    private fun reload() {
-
-    }
-    companion object {
-        private const val TAG = "EmailPassword"
-    }*/
-
-
 }

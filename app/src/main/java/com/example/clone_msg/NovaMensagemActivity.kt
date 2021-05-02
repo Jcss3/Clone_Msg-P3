@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.clone_msg.databinding.ActivityNovaMensagemBinding
 import com.example.clone_msg.databinding.ActivityUltimasMensagensBinding
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -63,11 +64,16 @@ class NovaMensagemActivity : AppCompatActivity() {
                     Log.d("NovaMensagemActivity", "User info: $it.toString()")
                     User_Key = it.getValue(User::class.java)
                     if (User_Key != null) {
-                        userslist.add(User_Key!!)
-                        Log.d("NovaMensagemActivity", "User add to list sucessfully: ${User_Key.toString()}")
-                        Log.d("NovaMensagemActivity", "Tamanho lista: ${userslist.size}")
+                        val userLogado = FirebaseAuth.getInstance().uid
+
+                        if ( userLogado != User_Key!!.uid) {
+                            userslist.add(User_Key!!)
+                            Log.d("NovaMensagemActivity", "User add to list sucessfully: ${User_Key.toString()}")
+                            Log.d("NovaMensagemActivity", "Tamanho lista: ${userslist.size}")
+                        }
                     }
                 }
+
                 binding.listaElementosRecyclerView.adapter = UserAdapter(userslist,layoutInflater)
                 Log.d("NovaMensagemActivity", "Acionando o Adapter da Novamensagem com Sucesso!")
             }
