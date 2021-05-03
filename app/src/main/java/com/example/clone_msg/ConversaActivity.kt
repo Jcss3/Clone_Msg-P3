@@ -3,7 +3,9 @@ package com.example.clone_msg
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.clone_msg.databinding.ActivityConversaBinding
@@ -19,6 +21,7 @@ class ConversaActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityConversaBinding
     private val mensagensList = arrayListOf<Mensagem>()
+    private val viewModel : ConversaViewModel by viewModels()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,6 +47,13 @@ class ConversaActivity : AppCompatActivity() {
         }
 
         binding.conversaRecyclerview.adapter = MensagemAdapter(mensagensList,layoutInflater)
+
+        /*// viewModel para obeservar a lista de mensagens pode usar sem internet - não funcionou
+        viewModel.Mensagens(mensagensList)
+        viewModel.conversa.observe(this,
+        Observer {
+            mensagensList = it.
+        })*/
     }
 
     private fun escutandoMensagens() {
